@@ -7,6 +7,8 @@ from metmuseum.responses.response import Response
 
 
 class AiohttpResponseAdapter(Response):
+    __slots__ = ("__response",)
+
     def __init__(self, raw_response: ClientResponse):
         self.__response = raw_response
 
