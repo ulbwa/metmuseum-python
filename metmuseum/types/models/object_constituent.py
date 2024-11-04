@@ -14,10 +14,11 @@ class ObjectConstituent(BaseModel):
     # so i can't be sure if there are other values that should also be handled as None.
     # This solution might cause issues later on
     ulan: str | None = Field(alias="constituentULAN_URL")
+    wikidata: str | None = Field(alias="constituentWikidata_URL")
 
     gender: str = Field(alias="gender")
 
-    @field_validator("ulan", mode="before")
+    @field_validator("ulan", "wikidata", mode="before")
     def validate_empty_str_as_none(cls, v):
         if v == "":
             return None

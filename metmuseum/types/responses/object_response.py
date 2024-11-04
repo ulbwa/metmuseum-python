@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Annotated
 
-from annotated_types import Gt
+from annotated_types import Gt, MinLen
 from pydantic import BaseModel, Field, field_validator
 
 from metmuseum.types import models
@@ -24,14 +24,14 @@ class ObjectResponse(BaseModel):
     title: str = Field(alias="title")
     culture: str = Field(alias="culture")
     period: str = Field(alias="period")
-    dynasty: str = Field(alias="dynasty")
-    reign: str = Field(alias="reign")
-    portfolio: str = Field(alias="portfolio")
+    dynasty: Annotated[str, MinLen(1)] | None = Field(alias="dynasty")
+    reign: Annotated[str, MinLen(1)] | None = Field(alias="reign")
+    portfolio: Annotated[str, MinLen(1)] | None = Field(alias="portfolio")
     artist_role: str = Field(alias="artistRole")
-    artist_prefix: str = Field(alias="artistPrefix")
+    artist_prefix: Annotated[str, MinLen(1)] | None = Field(alias="artistPrefix")
     artist_display_name: str = Field(alias="artistDisplayName")
     artist_display_bio: str = Field(alias="artistDisplayBio")
-    artist_suffix: str = Field(alias="artistSuffix")
+    artist_suffix: Annotated[str, MinLen(1)] | None = Field(alias="artistSuffix")
     artist_alpha_sort: str = Field(alias="artistAlphaSort")
     artist_nationality: str = Field(alias="artistNationality")
     artist_begin_date: int | None = Field(alias="artistBeginDate")
@@ -57,20 +57,22 @@ class ObjectResponse(BaseModel):
         alias="measurements"
     )
     credit_line: str = Field(alias="creditLine")
-    geography_type: str = Field(alias="geographyType")
-    city: str = Field(alias="city")
-    state: str = Field(alias="state")
-    county: str = Field(alias="county")
-    country: str = Field(alias="country")
-    region: str = Field(alias="region")
-    subregion: str = Field(alias="subregion")
-    locale: str = Field(alias="locale")
-    locus: str = Field(alias="locus")
-    excavation: str = Field(alias="excavation")
-    river: str = Field(alias="river")
+    geography_type: Annotated[str, MinLen(1)] | None = Field(alias="geographyType")
+    city: Annotated[str, MinLen(1)] | None = Field(alias="city")
+    state: Annotated[str, MinLen(1)] | None = Field(alias="state")
+    county: Annotated[str, MinLen(1)] | None = Field(alias="county")
+    country: Annotated[str, MinLen(1)] | None = Field(alias="country")
+    region: Annotated[str, MinLen(1)] | None = Field(alias="region")
+    subregion: Annotated[str, MinLen(1)] | None = Field(alias="subregion")
+    locale: Annotated[str, MinLen(1)] | None = Field(alias="locale")
+    locus: Annotated[str, MinLen(1)] | None = Field(alias="locus")
+    excavation: Annotated[str, MinLen(1)] | None = Field(alias="excavation")
+    river: Annotated[str, MinLen(1)] | None = Field(alias="river")
     classification: str = Field(alias="classification")
-    rights_and_reproduction: str = Field(alias="rightsAndReproduction")
-    link_resource: str = Field(alias="linkResource")
+    rights_and_reproduction: Annotated[str, MinLen(1)] | None = Field(
+        alias="rightsAndReproduction"
+    )
+    link_resource: Annotated[str, MinLen(1)] | None = Field(alias="linkResource")
     metadata_date: datetime = Field(alias="metadataDate")
     repository: str = Field(alias="repository")
 
@@ -86,7 +88,7 @@ class ObjectResponse(BaseModel):
     wikidata: str | None = Field(alias="objectWikidata_URL")
 
     is_timeline_work: bool = Field(alias="isTimelineWork")
-    Gallery_number: str = Field(alias="GalleryNumber")
+    gallery_number: Annotated[str, MinLen(1)] | None = Field(alias="GalleryNumber")
 
     @field_validator(
         "wikidata",
@@ -97,6 +99,25 @@ class ObjectResponse(BaseModel):
         "artist_begin_date",
         "artist_end_date",
         "accession_year",
+        "dynasty",
+        "reign",
+        "portfolio",
+        "artist_prefix",
+        "artist_suffix",
+        "geography_type",
+        "city",
+        "state",
+        "county",
+        "country",
+        "region",
+        "subregion",
+        "locale",
+        "locus",
+        "excavation",
+        "river",
+        "rights_and_reproduction",
+        "link_resource",
+        "gallery_number",
         mode="before",
     )
     def validate_empty_str_as_none(cls, v: str) -> str | None:
