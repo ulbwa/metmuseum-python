@@ -12,7 +12,7 @@ from metmuseum.responses import Response
 
 
 class AiohttpGateway(HttpGateway):
-    __slots__ = ("session",)
+    __slots__ = ("__logger",)
 
     def __init__(self):
         self.__logger = getLogger("metmuseum:aiohttp-gateway")
