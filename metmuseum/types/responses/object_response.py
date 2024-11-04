@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Annotated
 
 from annotated_types import Gt
-from pydantic import AnyHttpUrl, BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 from metmuseum.types.models.object_constituent import ObjectConstituent
 from metmuseum.types.models.object_dimensions import ObjectDimensions
@@ -16,12 +16,12 @@ class ObjectResponse(BaseModel):
     id: Annotated[int, Gt(0)] = Field(alias="objectID")
     is_highlight: bool = Field(alias="isHighlight")
     accession_number: str = Field(alias="accessionNumber")
-    accession_year: str = Field(alias="accessionYear")
+    accession_year: int | None = Field(alias="accessionYear")
     is_public_domain: bool = Field(alias="isPublicDomain")
-    primary_image: AnyHttpUrl = Field(alias="primaryImage")
-    primary_image_small: AnyHttpUrl = Field(alias="primaryImageSmall")
-    additional_images: tuple[AnyHttpUrl, ...] = Field(alias="additionalImages")
-    constituents: tuple[ObjectConstituent] = Field(alias="constituents")
+    primary_image: str | None = Field(alias="primaryImage")
+    primary_image_small: str | None = Field(alias="primaryImageSmall")
+    additional_images: tuple[str, ...] = Field(alias="additionalImages")
+    constituents: tuple[ObjectConstituent, ...] | None = Field(alias="constituents")
     department: str = Field(alias="department")
     name: str = Field(alias="objectName")
     title: str = Field(alias="title")
@@ -37,11 +37,17 @@ class ObjectResponse(BaseModel):
     artist_suffix: str = Field(alias="artistSuffix")
     artist_alpha_sort: str = Field(alias="artistAlphaSort")
     artist_nationality: str = Field(alias="artistNationality")
-    artist_begin_date: str = Field(alias="artistBeginDate")
-    artist_end_date: str = Field(alias="artistEndDate")
+    artist_begin_date: int | None = Field(alias="artistBeginDate")
+    artist_end_date: int | None = Field(alias="artistEndDate")
     artist_gender: str = Field(alias="artistGender")
-    artist_wikidata: AnyHttpUrl = Field(alias="artistWikidata_URL")
-    artist_ulan: AnyHttpUrl = Field(alias="artistULAN_URL")
+
+    # I think we need to use validation with AnyHttpUrl,
+    # but the API responses sometimes contain values like "(not assigned)",
+    # so i can't be sure if there are other values that should also be handled as None.
+    # This solution might cause issues later on
+    artist_wikidata: str | None = Field(alias="artistWikidata_URL")
+    artist_ulan: str | None = Field(alias="artistULAN_URL")
+
     date: str = Field(alias="objectDate")
     begin_date: int = Field(alias="objectBeginDate")
     end_date: int = Field(alias="objectEndDate")
@@ -50,7 +56,9 @@ class ObjectResponse(BaseModel):
     dimensions_parsed: tuple[ObjectDimensions, ...] = Field(
         alias="dimensionsParsed", default_factory=tuple
     )
-    measurements: tuple[ObjectMeasurementsElement, ...] = Field(alias="measurements")
+    measurements: tuple[ObjectMeasurementsElement, ...] | None = Field(
+        alias="measurements"
+    )
     credit_line: str = Field(alias="creditLine")
     geography_type: str = Field(alias="geographyType")
     city: str = Field(alias="city")
@@ -68,11 +76,36 @@ class ObjectResponse(BaseModel):
     link_resource: str = Field(alias="linkResource")
     metadata_date: datetime = Field(alias="metadataDate")
     repository: str = Field(alias="repository")
-    url: AnyHttpUrl = Field(alias="objectURL")
-    tags: tuple[ObjectTag, ...] = Field(alias="tags")
-    wikidata: AnyHttpUrl = Field(alias="objectWikidata_URL")
+
+    # Should this value always contain a URL? If so, can we use AnyHttpUrl here?
+    url: str = Field(alias="objectURL")
+
+    tags: tuple[ObjectTag, ...] | None = Field(alias="tags")
+
+    # I think we need to use validation with AnyHttpUrl,
+    # but the API responses sometimes contain values like "(not assigned)",
+    # so i can't be sure if there are other values that should also be handled as None.
+    # This solution might cause issues later on
+    wikidata: str | None = Field(alias="objectWikidata_URL")
+
     is_timeline_work: bool = Field(alias="isTimelineWork")
     Gallery_number: str = Field(alias="GalleryNumber")
+
+    @field_validator(
+        "wikidata",
+        "primary_image",
+        "primary_image_small",
+        "artist_wikidata",
+        "artist_ulan",
+        "artist_begin_date",
+        "artist_end_date",
+        "accession_year",
+        mode="before",
+    )
+    def validate_empty_str_as_none(cls, v: str) -> str | None:
+        if v == "":
+            return None
+        return v
 
 
 __all__ = ("ObjectResponse",)
