@@ -202,7 +202,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "aiohttp", extras = ["aiohttp"], specifier = ">=3.10.10" },
+    { name = "aiohttp", specifier = ">=3.10.10" },
     { name = "pydantic", specifier = ">=2.9.2" },
 ]
 
