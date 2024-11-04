@@ -9,8 +9,14 @@ jobs:
 
     env:
       METMUSEUM_URL: https://collectionapi.metmuseum.org/public/collection/v1
-      HTTPBIN_URL: https://httpbin.org
+      HTTPBIN_URL: http://localhost:8080
 
+    services:
+      httpbin:
+        image: kennethreitz/httpbin
+        ports:
+          - 8080:80
+          
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
