@@ -13,8 +13,10 @@ class ObjectResponse(BaseModel):
     accession_number: str = Field(alias="accessionNumber")
     accession_year: int | None = Field(alias="accessionYear")
     is_public_domain: bool = Field(alias="isPublicDomain")
-    primary_image: str | None = Field(alias="primaryImage")
-    primary_image_small: str | None = Field(alias="primaryImageSmall")
+    primary_image: Annotated[str, MinLen(1)] | None = Field(alias="primaryImage")
+    primary_image_small: Annotated[str, MinLen(1)] | None = Field(
+        alias="primaryImageSmall"
+    )
     additional_images: tuple[str, ...] = Field(alias="additionalImages")
     constituents: tuple[models.ObjectConstituent, ...] | None = Field(
         alias="constituents"
@@ -42,8 +44,8 @@ class ObjectResponse(BaseModel):
     # but the API responses sometimes contain values like "(not assigned)",
     # so i can't be sure if there are other values that should also be handled as None.
     # This solution might cause issues later on
-    artist_wikidata: str | None = Field(alias="artistWikidata_URL")
-    artist_ulan: str | None = Field(alias="artistULAN_URL")
+    artist_wikidata: Annotated[str, MinLen(1)] | None = Field(alias="artistWikidata_URL")
+    artist_ulan: Annotated[str, MinLen(1)] | None = Field(alias="artistULAN_URL")
 
     date: str = Field(alias="objectDate")
     begin_date: int = Field(alias="objectBeginDate")
@@ -85,7 +87,7 @@ class ObjectResponse(BaseModel):
     # but the API responses sometimes contain values like "(not assigned)",
     # so i can't be sure if there are other values that should also be handled as None.
     # This solution might cause issues later on
-    wikidata: str | None = Field(alias="objectWikidata_URL")
+    wikidata: Annotated[str, MinLen(1)] | None = Field(alias="objectWikidata_URL")
 
     is_timeline_work: bool = Field(alias="isTimelineWork")
     gallery_number: Annotated[str, MinLen(1)] | None = Field(alias="GalleryNumber")
