@@ -12,6 +12,11 @@ dependencies = [
 [project.urls]
 repository = "https://github.com/ulbwa/metmuseum-python"
 
+[tool.uv]
+dev-dependencies = [
+    "pytest-asyncio>=0.24.0",
+]
+
 [tool.ruff]
 lint.select = ["E", "F", "W", "Q", "I", "B"]
 
@@ -19,3 +24,7 @@ lint.fixable = ["ALL"]
 lint.unfixable = []
 
 line-length = 89
+
+[tool.pytest.ini_options]
+testpaths = [ "tests" ]
+asyncio_mode = "auto"
