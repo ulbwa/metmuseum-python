@@ -1,8 +1,7 @@
 name: Run tests
 
 on:
-  push:
-    branches: ['main']
+  push
 
 jobs:
   run-tests:
