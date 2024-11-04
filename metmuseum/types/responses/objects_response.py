@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 
 class ObjectsResponse(BaseModel):
     total: Annotated[int, Ge(0)] = Field(alias="total")
-    ids: tuple[Annotated[int, Gt(1)], ...] = Field(alias="objectIDs")
+    ids: tuple[Annotated[int, Gt(0)], ...] = Field(alias="objectIDs")
 
 
 __all__ = ("ObjectsResponse",)
