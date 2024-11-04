@@ -1,3 +1,3 @@
-from metmuseum.types import models, responses
+from metmuseum.types import exceptions, models, responses
 
-__all__ = "models", "responses"
+__all__ = "models", "responses", "exceptions"
