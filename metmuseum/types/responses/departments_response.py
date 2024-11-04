@@ -1,10 +1,10 @@
 from pydantic import BaseModel, Field
 
-from metmuseum.types.models.department_element import DepartmentElement
+from metmuseum.types import models
 
 
 class DepartmentsResponse(BaseModel):
-    departments: tuple[DepartmentElement, ...] = Field(alias="departments")
+    departments: tuple[models.DepartmentElement, ...] = Field(alias="departments")
 
 
 __all__ = ("DepartmentsResponse",)

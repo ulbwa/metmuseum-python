@@ -4,12 +4,7 @@ from typing import Annotated
 from annotated_types import Gt
 from pydantic import BaseModel, Field, field_validator
 
-from metmuseum.types.models.object_constituent import ObjectConstituent
-from metmuseum.types.models.object_dimensions import ObjectDimensions
-from metmuseum.types.models.object_measurementsElement import (
-    ObjectMeasurementsElement,
-)
-from metmuseum.types.models.object_tag import ObjectTag
+from metmuseum.types import models
 
 
 class ObjectResponse(BaseModel):
@@ -21,7 +16,9 @@ class ObjectResponse(BaseModel):
     primary_image: str | None = Field(alias="primaryImage")
     primary_image_small: str | None = Field(alias="primaryImageSmall")
     additional_images: tuple[str, ...] = Field(alias="additionalImages")
-    constituents: tuple[ObjectConstituent, ...] | None = Field(alias="constituents")
+    constituents: tuple[models.ObjectConstituent, ...] | None = Field(
+        alias="constituents"
+    )
     department: str = Field(alias="department")
     name: str = Field(alias="objectName")
     title: str = Field(alias="title")
@@ -53,10 +50,10 @@ class ObjectResponse(BaseModel):
     end_date: int = Field(alias="objectEndDate")
     medium: str = Field(alias="medium")
     dimensions: str = Field(alias="dimensions")
-    dimensions_parsed: tuple[ObjectDimensions, ...] = Field(
+    dimensions_parsed: tuple[models.ObjectDimensions, ...] = Field(
         alias="dimensionsParsed", default_factory=tuple
     )
-    measurements: tuple[ObjectMeasurementsElement, ...] | None = Field(
+    measurements: tuple[models.ObjectMeasurementsElement, ...] | None = Field(
         alias="measurements"
     )
     credit_line: str = Field(alias="creditLine")
@@ -80,7 +77,7 @@ class ObjectResponse(BaseModel):
     # Should this value always contain a URL? If so, can we use AnyHttpUrl here?
     url: str = Field(alias="objectURL")
 
-    tags: tuple[ObjectTag, ...] | None = Field(alias="tags")
+    tags: tuple[models.ObjectTag, ...] | None = Field(alias="tags")
 
     # I think we need to use validation with AnyHttpUrl,
     # but the API responses sometimes contain values like "(not assigned)",
