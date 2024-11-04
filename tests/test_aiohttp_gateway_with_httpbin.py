@@ -26,12 +26,12 @@ async def test_httpbin_get_request(httpbin_url: str, aiohttp_gateway: AiohttpGat
         headers={"x-my-extra-header": "my extra value"},
     ) as response:
         assert response.status_code == HTTPStatus.OK
-        assert response.url == "https://httpbin.org/get?myQueryParam=1"
+        assert response.url == httpbin_url + "/get?myQueryParam=1"
 
         data = await response.read()
         parsed_data = json.loads(data.decode("utf-8"))
 
-        assert parsed_data["url"] == "https://httpbin.org/get?myQueryParam=1"
+        assert parsed_data["url"] == httpbin_url + "/get?myQueryParam=1"
         assert parsed_data["headers"]["X-My-Extra-Header"] == "my extra value"
         assert parsed_data["args"]["myQueryParam"] == "1"
 
@@ -45,12 +45,12 @@ async def test_httpbin_post_request(httpbin_url: str, aiohttp_gateway: AiohttpGa
         data=b"my data",
     ) as response:
         assert response.status_code == HTTPStatus.OK
-        assert response.url == "https://httpbin.org/post?myQueryParam=1"
+        assert response.url == httpbin_url + "/post?myQueryParam=1"
 
         data = await response.read()
         parsed_data = json.loads(data.decode("utf-8"))
 
-        assert parsed_data["url"] == "https://httpbin.org/post?myQueryParam=1"
+        assert parsed_data["url"] == httpbin_url + "/post?myQueryParam=1"
         assert parsed_data["headers"]["X-My-Extra-Header"] == "my extra value"
         assert parsed_data["data"] == "my data"
 
