@@ -28,10 +28,6 @@ class AiohttpResponseAdapter(Response):
     def headers(self) -> Mapping[str, str]:
         return self.raw_response.headers
 
-    @property
-    def ok(self) -> bool:
-        return self.raw_response.ok
-
     async def read(self) -> bytes:
         return await self.raw_response.read()
 

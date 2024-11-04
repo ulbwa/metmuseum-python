@@ -16,10 +16,6 @@ class Response(Protocol):
     @abstractmethod
     def headers(self) -> Mapping[str, str]: ...
 
-    @property
-    @abstractmethod
-    def ok(self) -> bool: ...
-
     @abstractmethod
     async def read(self) -> bytes: ...
 
