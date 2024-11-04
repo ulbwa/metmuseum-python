@@ -1,7 +1,7 @@
 [project]
 name = "metmuseum"
 version = "0.1.0"
-description = "Metropolitan Museum API Client Library"
+description = "Python client library for accessing the Metropolitan Museum of Art's public API"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
