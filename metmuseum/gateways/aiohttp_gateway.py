@@ -29,14 +29,14 @@ class AiohttpGateway(HttpGateway):
         url: str,
         query: Mapping[str, str] | None = None,
         headers: Mapping[str, str] | None = None,
-        body: bytes | None = None,
+        data: bytes | None = None,
     ) -> AsyncIterator[Response]:
         async with self.get_session() as session:
             req_id = uuid4()
             self.__logger.debug(f"Request: {req_id} {method.value} {url}")
 
             async with session.request(
-                method.value, url, params=query, data=body, headers=headers
+                method.value, url, params=query, data=data, headers=headers
             ) as raw_response:
                 response = AiohttpResponseAdapter(raw_response)
                 self.__logger.debug(f"Response: {req_id} {response.status_code}")

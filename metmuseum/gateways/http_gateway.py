@@ -11,7 +11,7 @@ class HttpGateway(Protocol):
         url: str,
         query: Mapping[str, str] | None = None,
         headers: Mapping[str, str] | None = None,
-        body: bytes | None = None,
+        data: bytes | None = None,
     ) -> AsyncContextManager[Response]: ...
 
 

@@ -32,14 +32,14 @@ class MetMuseum:
         resp: type[AnyResponseT],
         query: dict[str, str] | None = None,
         headers: dict[str, str] | None = None,
-        body: bytes | None = None,
+        data: bytes | None = None,
     ) -> AnyResponseT:
         async with self.gateway.make_request(
             method=method,
             url=self.base_url + path,
             query=query,
             headers=headers,
-            body=body,
+            data=data,
         ) as response:
             data = await response.read()
             if 400 <= response.status_code <= 499:
