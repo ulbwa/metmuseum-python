@@ -6,7 +6,7 @@ from metmuseum.types.exceptions.api_exception import ApiException
 
 class ServerException(ApiException):
     def __init__(self, status_code: HTTPStatus, headers: Mapping[str, str], data: bytes):
-        assert status_code.is_server_error
+        assert 500 <= status_code <= 599
 
         super().__init__(status_code, headers, data)
 

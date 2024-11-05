@@ -8,7 +8,7 @@ class ApiException(Exception):
     __slots__ = "__status_code", "__headers", "__data"
 
     def __init__(self, status_code: HTTPStatus, headers: Mapping[str, str], data: bytes):
-        assert status_code.is_client_error or status_code.is_server_error
+        assert 400 <= status_code <= 599
 
         self.__status_code = status_code
         self.__headers = headers
