@@ -36,8 +36,11 @@ class ObjectResponse(BaseModel):
     artist_suffix: Annotated[str, MinLen(1)] | None = Field(alias="artistSuffix")
     artist_alpha_sort: str = Field(alias="artistAlphaSort")
     artist_nationality: str = Field(alias="artistNationality")
-    artist_begin_date: int | None = Field(alias="artistBeginDate")
-    artist_end_date: int | None = Field(alias="artistEndDate")
+
+    # int (year), str (yyyy-mm-dd), whatever found, so i can't validate this fields
+    artist_begin_date: str | None = Field(alias="artistBeginDate")
+    artist_end_date: str | None = Field(alias="artistEndDate")
+
     artist_gender: str = Field(alias="artistGender")
 
     # I think we need to use validation with AnyHttpUrl,
@@ -48,8 +51,11 @@ class ObjectResponse(BaseModel):
     artist_ulan: Annotated[str, MinLen(1)] | None = Field(alias="artistULAN_URL")
 
     date: str = Field(alias="objectDate")
-    begin_date: int = Field(alias="objectBeginDate")
-    end_date: int = Field(alias="objectEndDate")
+
+    # int (year), str (yyyy-mm-dd), whatever found, so i can't validate this fields
+    begin_date: str = Field(alias="objectBeginDate")
+    end_date: str = Field(alias="objectEndDate")
+
     medium: str = Field(alias="medium")
     dimensions: str = Field(alias="dimensions")
     dimensions_parsed: tuple[models.ObjectDimensions, ...] = Field(
@@ -125,6 +131,14 @@ class ObjectResponse(BaseModel):
     def validate_empty_str_as_none(cls, v: str) -> str | None:
         if v == "":
             return None
+        return v
+
+    @field_validator(
+        "artist_begin_date", "artist_end_date", "begin_date", "end_date", mode="before"
+    )
+    def validate_int_as_str(cls, v: int | None) -> str | None:
+        if v is not None:
+            return str(v)
         return v
 
 
